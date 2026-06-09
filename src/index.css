@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+/* ---------- Tokens del escenario (tema oscuro de cine, divergente del dashboard) ---------- */
+@theme {
+  --color-stage: #07090d;        /* fondo del teatro (casi negro azulado) */
+  --color-stage-soft: #0d1117;   /* paneles sobre el escenario */
+  --color-ivory: #f2efe7;        /* texto principal (marfil) */
+  --color-ivory-dim: #b8b4a8;    /* texto secundario */
+  --color-faint: #6b6a62;        /* metadatos */
+  --color-hairline: #232a33;     /* líneas finas */
+
+  --color-spark: #2dd4c5;        /* acento turquesa (luz del proyecto) */
+  --color-spark-deep: #0d8f84;
+  --color-ember: #e8a33d;        /* alerta cálida */
+  --color-blood: #e85d4b;        /* riesgo */
+  --color-leaf: #46c08b;         /* señal positiva */
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+html {
+  background: var(--color-stage);
+}
+
+body {
+  background: var(--color-stage);
+  color: var(--color-ivory);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--color-spark); color: #06211e; }
+
+.font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.015em;
+}
+
+/* ---------- Lenis ---------- */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* ---------- Grano de cine sutil (textura sobre todo el escenario) ---------- */
+.stage-grain::after {
+  content: "";
+  position: fixed; inset: 0; pointer-events: none; z-index: 80;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+}
+
+/* ---------- Tipografía de actos ---------- */
+.act-kicker {
+  font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--color-spark); font-weight: 600;
+}
+.act-title {
+  font-family: var(--font-display);
+  font-weight: 600; line-height: 1.02; letter-spacing: -0.02em;
+  font-size: clamp(2.4rem, 7vw, 6.5rem);
+}
+.act-giant {
+  font-family: var(--font-display);
+  font-weight: 700; line-height: 0.95; letter-spacing: -0.03em;
+  font-size: clamp(4.5rem, 16vw, 15rem);
+}
+
+/* tachado animado de la frase de apertura */
+.strike-line {
+  position: absolute; left: -2%; right: 102%; top: 54%; height: 0.07em;
+  background: var(--color-blood); transform: rotate(-1.2deg);
+}
+
+/* ---------- Utilidades ---------- */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.hairline-t { border-top: 1px solid var(--color-hairline); }
+
+/* ---------- Reduced motion: todo visible, sin coreografía ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* relevo de presentador (chip que entra) */
+@keyframes juryPop { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.jury-pop { animation: juryPop 0.5s ease-out; }
+
+/* ---------- Edición 2.1 · lenguaje de libro ---------- */
+/* cinta marcapáginas: cuelga del borde superior y baja con el avance */
+.bookmark {
+  position: fixed; top: 0; right: 5vw; width: 16px; z-index: 75;
+  background: linear-gradient(180deg, #c14b3c, #e85d4b);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 9px), 50% 100%, 0 calc(100% - 9px));
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  transition: height 0.7s cubic-bezier(0.22, 0.7, 0.2, 1);
+}
+
+/* índice como tabla de contenidos de libro (puntos conductores) */
+.toc-leader { flex: 1 1 auto; border-bottom: 2px dotted var(--color-faint); opacity: 0.45; margin: 0 10px; transform: translateY(-5px); min-width: 24px; }
+
+/* letra capitular de los capítulos */
+.capitular {
+  float: left; font-family: var(--font-display); font-weight: 700;
+  font-size: 5.2em; line-height: 0.82; padding-right: 0.08em; margin-top: 0.04em;
+}
+
+/* lomos de la estantería */
+.lomo { transform-origin: bottom; border-radius: 2px 2px 0 0; }
+
+/* fichas de lector (clientes) */
+.ficha {
+  width: 13px; height: 17px; border-radius: 2px 2px 1px 1px;
+  background: linear-gradient(180deg, #efe9da, #cfc8b6);
+  position: relative;
+}
+.ficha::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  border-radius: 2px 2px 0 0; background: var(--tab, transparent);
+}
+.ficha.tab-riesgo::before { height: 6px; top: -2px; }
+
+/* sello de aduana sobre el mapa */
+.sello {
+  display: inline-block; border: 2.5px solid currentColor; border-radius: 6px;
+  padding: 5px 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  font-size: 12px; opacity: 0.92; backdrop-filter: blur(2px);
+}
+
+/* colofón */
+.colofon { border: 1px solid var(--color-hairline); padding: 18px 26px; font-style: italic; }
