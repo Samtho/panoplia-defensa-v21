@@ -4,7 +4,7 @@ import EscPortada from "./EscPortada";
 import Act01Apertura from "./Act01Apertura";
 import EscEquipo from "./EscEquipo";
 import Act03Caida from "./Act03Caida";
-import Act02Mapa from "./Act02Mapa";
+import EscMapaDeck from "./EscMapaDeck";
 import EscSplit from "./EscSplit";
 import EscEstanteria from "./EscEstanteria";
 import EscFichero from "./EscFichero";
@@ -69,7 +69,7 @@ export const ESCENAS: Escena[] = [
   // Capítulo I · El diagnóstico · EH (≈4 min)
   { id: "cap1", cap: 1, label: "— Capítulo I —", pres: "EH", min: 0.2, Comp: card(1, "¿Está Panoplia tomando las decisiones correctas? Primero, la verdad incómoda.", "EH") },
   { id: "caida", cap: 1, label: "La caída (-18,3%)", pres: "EH", min: 1.5, Comp: Act03Caida },
-  { id: "mapa", cap: 1, label: "El mapa del dinero", pres: "EH", min: 1.3, Comp: Act02Mapa },
+  { id: "mapa", cap: 1, label: "El mapa del dinero (3D)", pres: "EH", min: 1.3, Comp: EscMapaDeck },
   { id: "split", cap: 1, label: "Todo en la misma cesta", pres: "EH", min: 1, field: "split", Comp: EscSplit },
 
   // Capítulo II · Catálogo y clientes · HV (≈4 min)

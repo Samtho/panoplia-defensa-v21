@@ -11,6 +11,7 @@ const IVORY: RGB = [184, 180, 168];
 const BLOOD: RGB = [232, 93, 75];
 type RGB = [number, number, number];
 type P = { x: number; y: number; tx: number; ty: number; c: RGB; tc: RGB; a: number; ta: number; r: number };
+const GLYPHS = "panopliadelibros&;,.aeourtsnm";
 
 // aleatorio determinista (misma composición en cada pase)
 function rng(seed: number) {
@@ -133,9 +134,15 @@ export default function ParticleField({ layout }: { layout: FieldLayout }) {
           dy = Math.cos(now / 2900 + i * 1.7) * 7;
         }
         ctx.fillStyle = `rgba(${p.c[0] | 0},${p.c[1] | 0},${p.c[2] | 0},${p.a})`;
-        ctx.beginPath();
-        ctx.arc(p.x + dx, p.y + dy, p.r, 0, 7);
-        ctx.fill();
+        if (driftOn && i % 4 === 0) {
+          // tipos móviles de imprenta: la historia aún sin componer
+          ctx.font = `${9 + (i % 3) * 3}px Fraunces, Georgia, serif`;
+          ctx.fillText(GLYPHS[i % GLYPHS.length], p.x + dx, p.y + dy);
+        } else {
+          ctx.beginPath();
+          ctx.arc(p.x + dx, p.y + dy, p.r, 0, 7);
+          ctx.fill();
+        }
       }
       raf = requestAnimationFrame(draw);
     }

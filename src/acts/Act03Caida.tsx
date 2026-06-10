@@ -9,7 +9,19 @@ export default function Act03Caida() {
   useEntrance(root);
 
   return (
-    <section ref={root} className="h-full w-full flex items-center px-6 md:px-14">
+    <section ref={root} className="relative h-full w-full flex items-center px-6 md:px-14 overflow-hidden">
+      {/* páginas que se desprenden del libro (las ventas que se van) */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        {Array.from({ length: 14 }, (_, i) => (
+          <span key={i} className="page-fall" style={{
+            left: `${(i * 7.3 + 4) % 96}%`,
+            animationDelay: `${(i * 0.9) % 7}s`,
+            animationDuration: `${7 + (i % 5) * 1.6}s`,
+            width: `${10 + (i % 3) * 4}px`,
+            height: `${14 + (i % 4) * 5}px`,
+          }} />
+        ))}
+      </div>
       <div className="grid lg:grid-cols-[1fr_1.3fr] gap-10 items-center w-full max-w-7xl mx-auto">
         <div>
           <p data-a className="act-kicker mb-4">Acto 3 · ¿Lo está haciendo bien?</p>

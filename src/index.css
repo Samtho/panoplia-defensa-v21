@@ -137,3 +137,16 @@ html.lenis, html.lenis body { height: auto; }
 
 /* colofón */
 .colofon { border: 1px solid var(--color-hairline); padding: 18px 26px; font-style: italic; }
+
+/* páginas que caen (escena de la caída) */
+@keyframes pageFall {
+  0% { transform: translateY(-12vh) rotate(0deg); opacity: 0; }
+  12% { opacity: 0.5; }
+  100% { transform: translateY(112vh) rotate(220deg); opacity: 0; }
+}
+.page-fall {
+  position: absolute; top: 0; display: block;
+  background: linear-gradient(135deg, rgba(242,239,231,0.5), rgba(184,180,168,0.25));
+  border-radius: 1px;
+  animation: pageFall linear infinite;
+}
