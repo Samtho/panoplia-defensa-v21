@@ -3,6 +3,7 @@ import { useTheatre } from "./lib/theatre";
 import ParticleField from "./lib/ParticleField";
 import AnexosShow from "./components/AnexosShow";
 import { ESCENAS, CAPITULOS, PRESENTERS, MIN_TOTALES } from "./acts";
+import { NOTAS } from "./acts/notes";
 
 // Cortina de entrada del teatro.
 function Preloader() {
@@ -67,6 +68,7 @@ function Indice({ esc, onJump, onClose }: { esc: number; onJump: (n: number) => 
 
 export default function App() {
   const [anexosOpen, setAnexosOpen] = useState(false);
+  const [orador, setOrador] = useState(false);
   const { act: esc, go, next, prev, indexOpen, setIndexOpen } = useTheatre(ESCENAS.length, anexosOpen);
   const escena = ESCENAS[esc];
   const cap = CAPITULOS[escena.cap];
@@ -85,6 +87,7 @@ export default function App() {
     const onKey = (e: KeyboardEvent) => {
       if (e.key.toLowerCase() === "t") setShowTimer((v) => !v);
       if (e.key.toLowerCase() === "a") setAnexosOpen((v) => !v);
+      if (e.key.toLowerCase() === "n") setOrador((v) => !v);
     };
     window.addEventListener("keydown", onKey);
     return () => { clearInterval(id); window.removeEventListener("keydown", onKey); };
@@ -132,6 +135,7 @@ export default function App() {
               <span className="text-ivory font-semibold">{mmss}</span> · plan {minSugerido.toFixed(1).replace(".", ",")}′
             </span>
           )}
+          {orador && <span className="text-[11px] text-spark font-semibold tracking-wide">● modo orador</span>}
           <button onClick={() => setAnexosOpen(true)} className="text-sm text-faint hover:text-spark transition-colors">
             anexos
           </button>
@@ -158,9 +162,27 @@ export default function App() {
           </span>
           <span className="text-sm text-ivory-dim">{pres.nombre}</span>
         </div>
-        <span className="text-[11px] text-faint hidden md:inline">← → pasar página · Esc índice · A anexos · T ensayo · datos reales 2021-2026</span>
+        <span className="text-[11px] text-faint hidden md:inline">← → pasar página · Esc índice · A anexos · N notas de orador · T ensayo</span>
       </footer>
 
+      {orador && NOTAS[escena.id] && (
+        <div className="fixed bottom-14 left-0 right-0 z-[65] px-6 md:px-10">
+          <div className="mx-auto max-w-4xl rounded-t-2xl border border-hairline border-b-0 bg-stage-soft/95 backdrop-blur px-6 py-4">
+            <div className="flex items-start gap-3">
+              <span className="text-[10px] uppercase tracking-[0.2em] text-spark font-semibold mt-1 shrink-0">Decir</span>
+              <p className="text-sm text-ivory leading-relaxed">{NOTAS[escena.id].decir}</p>
+            </div>
+            {NOTAS[escena.id].q && (
+              <div className="flex items-start gap-3 mt-3 pt-3 border-t border-hairline">
+                <span className="text-[10px] uppercase tracking-[0.2em] text-ember font-semibold mt-1 shrink-0">Si&nbsp;preguntan</span>
+                <p className="text-sm text-ivory-dim leading-relaxed">
+                  <span className="text-ember font-semibold">{NOTAS[escena.id].by}:</span> "{NOTAS[escena.id].q}" → {NOTAS[escena.id].a}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
       {indexOpen && <Indice esc={esc} onJump={go} onClose={() => setIndexOpen(false)} />}
       {anexosOpen && <AnexosShow onClose={() => setAnexosOpen(false)} />}
     </div>
