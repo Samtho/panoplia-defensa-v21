@@ -4,7 +4,11 @@ import { cubo, cuboMes } from "../data/cubo";
 import { mensualPremiumOption, generosPremiumOption, donutPremiumOption, aniosPremiumOption } from "../charts/anexo";
 
 // El ala de Anexos: lo que se abre cuando el tribunal pregunta "¿y esto cómo está hecho?".
-// Dos salas: El taller (cómo se construyó el dato, visual) y El cuadro de mando (interactivo).
+// Salas: El taller (cómo se construyó el dato), El cuadro de mando (interactivo) y Power BI en vivo.
+
+// >>> Pega aquí el enlace "Publicar en la web" de Power BI (el src del iframe) y la pestaña
+//     mostrará el informe embebido e interactivo. Vacío = muestra instrucciones, sin exponer nada.
+const POWERBI_EMBED_URL = "";
 
 const GEN: Record<number, string> = {
   1: "Arte y Humanidades", 2: "Autoayuda", 3: "Ciencia y Tecnología", 4: "Ciencias Sociales",
@@ -138,9 +142,45 @@ function Cuadro() {
   );
 }
 
+// ---------- Sala 3 · Power BI en vivo (embebido) ----------
+function PowerBI() {
+  if (POWERBI_EMBED_URL) {
+    return (
+      <div className="max-w-6xl mx-auto">
+        <p className="text-ivory-dim text-sm mb-4">
+          El informe de Power BI del equipo, embebido e interactivo: filtra, segmenta y navega sin salir de la presentación.
+        </p>
+        <div className="rounded-2xl border border-hairline overflow-hidden bg-stage-soft" style={{ aspectRatio: "16 / 9" }}>
+          <iframe title="Power BI · Panoplia" src={POWERBI_EMBED_URL} className="w-full h-full" frameBorder={0} allowFullScreen />
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div className="max-w-3xl mx-auto text-center">
+      <div className="rounded-2xl border border-dashed border-hairline bg-stage-soft p-12">
+        <div className="font-display text-2xl font-semibold text-ivory mb-3">Aquí irá el Power BI embebido</div>
+        <p className="text-ivory-dim leading-relaxed">
+          Esta pestaña mostrará el informe de Power BI del equipo, <strong className="text-ivory">vivo e interactivo</strong>,
+          en cuanto se pegue el enlace de "Publicar en la web".
+        </p>
+        <div className="mt-6 text-left text-sm text-ivory-dim bg-stage rounded-xl border border-hairline p-5">
+          <p className="text-spark font-semibold mb-2">Cómo generar el enlace (Power BI Service):</p>
+          <ol className="list-decimal list-inside space-y-1">
+            <li>Sube el informe (.pbix) a Power BI Service.</li>
+            <li>Archivo → Insertar informe → <strong className="text-ivory">Publicar en la web (público)</strong>.</li>
+            <li>Copia el enlace del iframe y pásamelo.</li>
+          </ol>
+          <p className="text-faint text-xs mt-3">Nota: "Publicar en la web" hace el informe público. Si los datos no pueden serlo, se enseña en vivo desde el portátil.</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ---------- El ala completa ----------
 export default function AnexosShow({ onClose }: { onClose: () => void }) {
-  const [sala, setSala] = useState<"taller" | "cuadro">("taller");
+  const [sala, setSala] = useState<"taller" | "cuadro" | "powerbi">("taller");
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape" || e.key.toLowerCase() === "a") onClose(); };
     window.addEventListener("keydown", onKey);
@@ -154,7 +194,7 @@ export default function AnexosShow({ onClose }: { onClose: () => void }) {
           <div className="flex items-center gap-4">
             <span className="font-display font-semibold text-lg">Anexos<span className="text-spark">.</span></span>
             <nav className="flex gap-1">
-              {([["taller", "El taller del dato"], ["cuadro", "El cuadro de mando"]] as const).map(([k, label]) => (
+              {([["taller", "El taller del dato"], ["cuadro", "El cuadro de mando"], ["powerbi", "Power BI en vivo"]] as const).map(([k, label]) => (
                 <button key={k} onClick={() => setSala(k)}
                   className={`px-4 py-1.5 text-sm rounded-full transition-colors ${sala === k ? "bg-spark text-stage font-semibold" : "text-ivory-dim hover:text-spark"}`}>
                   {label}
@@ -166,7 +206,7 @@ export default function AnexosShow({ onClose }: { onClose: () => void }) {
         </div>
       </header>
       <main className="px-6 py-10">
-        {sala === "taller" ? <Taller /> : <Cuadro />}
+        {sala === "taller" ? <Taller /> : sala === "cuadro" ? <Cuadro /> : <PowerBI />}
       </main>
     </div>
   );
