@@ -16,6 +16,7 @@ import Act08Dato from "./Act08Dato";
 import Act09Ruta from "./Act09Ruta";
 import EscArquitectura from "./EscArquitectura";
 import Act10Cierre from "./Act10Cierre";
+import EscAprendizajes from "./EscAprendizajes";
 import EscGracias from "./EscGracias";
 import CardCapitulo from "./CardCapitulo";
 
@@ -91,6 +92,7 @@ export const ESCENAS: Escena[] = [
   { id: "arquitectura", cap: 4, label: "El viaje del dato (Azure)", pres: "VS", min: 1, Comp: EscArquitectura },
 
   // Cierre · SO (≈2 min)
+  { id: "aprendizajes", cap: 5, label: "Aprendizajes y próximos pasos", pres: "SO", min: 1.3, Comp: EscAprendizajes },
   { id: "tesis", cap: 5, label: "La tesis", pres: "SO", min: 1.2, field: "arrow", Comp: Act10Cierre },
   { id: "gracias", cap: 5, label: "Gracias · preguntas", pres: "SO", min: 0.5, field: "drift", Comp: EscGracias },
 ];
